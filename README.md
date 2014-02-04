@@ -1,3 +1,3 @@
 mch
 ===
-Music changer for mpd with dmenu
+Music changer for mpd with dmenu.
