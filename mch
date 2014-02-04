@@ -26,9 +26,9 @@ function play
         dmenu -l $s_number -y 425 -x 690 -w 300 \
         -fn "Monospace-12:normal" -nb "#002A35")
 
-    #if [[ -z $selected ]]; then
-        #exit
-    #fi
+    if [[ -z $selected ]]; then
+        exit
+    fi
 
     number=$(grep "$selected" $tmp_file | cut -f1)
 
