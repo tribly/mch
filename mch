@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#######################################
+###     Initialize everyhing        ###
+#######################################
 function init
 {
     s_number=$(mpc playlist | wc -l)
