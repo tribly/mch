@@ -11,22 +11,20 @@ function init
     s_number=10
 
     # Put the playlist in a tmp file
-    mpc playlist -f "%position%\t%artist%\t%title%" | tee $tmp_file > /dev/null
+    mpc playlist -f "%position%\t%artist%\t%title%" > $tmp_file
 
     cur_song=$(mpc current -f "%position%\t%artist%\t%title%")
     cur_song_nr=`echo "$cur_song" | cut -f1`
-    next_song_nr=`expr $cur_song_nr + 1`
 
-    if [[ ! -z $next_song_nr ]]; then
-        next_song="end of playlist"
-    else
-        next_song=$(cat $tmp_file | grep $next_song_nr)
-    fi
+    next_song_nr=`expr $cur_song_nr + 1`
+    next_song=$(cat $tmp_file | grep $next_song_nr)
 }
 
 function menu
 {
+    #echo "$next_song"
     next_song_tmp=$(echo "$next_song" | cut -f2-3 | sed 's/\t/ - /')
+    #echo "$next_song_tmp"
 
     menu="play
 random
