@@ -22,9 +22,8 @@ function init
 
 function menu
 {
-    #echo "$next_song"
+    # Make it pretty to display in dmenu
     next_song_tmp=$(echo "$next_song" | cut -f2-3 | sed 's/\t/ - /')
-    #echo "$next_song_tmp"
 
     menu="play
 random
