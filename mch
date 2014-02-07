@@ -15,7 +15,6 @@ function init
 
     cur_song=$(mpc current -f "%position%\t%artist%\t%title%")
     cur_song_nr=`echo "$cur_song" | cut -f1`
-    echo $cur_song_nr
     next_song_nr=`expr $cur_song_nr + 1`
 
     if [[ ! -z $next_song_nr ]]; then
