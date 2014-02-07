@@ -34,6 +34,8 @@ next:       $next_song_tmp"
     option=$(echo "$menu" | dmenu -l $s_number -y 425 -x 690 -w 600 \
                             -fn "Monospace-12:normal" -nb "#002A35")
 
+    option=$(echo "$option" | cut -d ":" -f1)
+
     case "$option" in
         play)
             mpc toggle > /dev/null
@@ -46,6 +48,9 @@ next:       $next_song_tmp"
         ;;
         shuffle)
             notify-send "Shuffled playlist"
+        ;;
+        next)
+            mpc play $next_song_nr > /dev/null
         ;;
     esac
 
