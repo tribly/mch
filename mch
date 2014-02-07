@@ -15,30 +15,26 @@ function init
 
     cur_song=$(mpc current -f "%position%\t%artist%\t%title%")
     cur_song_nr=`echo "$cur_song" | cut -f1`
+    echo $cur_song_nr
     next_song_nr=`expr $cur_song_nr + 1`
-    next_song=
 
-    echo $next_song_nr
-
-    next_song=
-
-    # Shuffle the playlist
-    #shuf $tmp_file -o $tmp_file
-
-    # Show only 10 songs
-    #if [[ $s_number -gt 10 ]]; then
-        #s_number=10
-    #fi
+    if [[ ! -z $next_song_nr ]]; then
+        next_song="end of playlist"
+    else
+        next_song=$(cat $tmp_file | grep $next_song_nr)
+    fi
 }
 
 function menu
 {
+    next_song_tmp=$(echo "$next_song" | cut -f2-3 | sed 's/\t/ - /')
+
     menu="play
 random
 shuffle
-next: "
+next:       $next_song_tmp"
 
-    option=$(echo "$menu" | dmenu -l $s_number -y 425 -x 690 -w 300 \
+    option=$(echo "$menu" | dmenu -l $s_number -y 425 -x 690 -w 600 \
                             -fn "Monospace-12:normal" -nb "#002A35")
 
     case "$option" in
