@@ -14,25 +14,27 @@ function init
     mpc playlist -f "%position%\t%artist%\t%title%" > $tmp_file
 
     cur_song=$(mpc current -f "%position%\t%artist%\t%title%")
-    cur_song_nr=`echo "$cur_song" | cut -f1`
+    cur_song_nr=$(echo "$cur_song" | cut -f1)
 
-    next_song_nr=`expr $cur_song_nr + 1`
-    next_song=$(cat $tmp_file | grep $next_song_nr)
+    next_song_nr=$(expr $cur_song_nr + 1)
+    next_song=$(cat $tmp_file | grep -w $next_song_nr)
 }
 
 function menu
 {
-    if [[ `mpc | grep "/" | cut -d ' ' -f1` == "[playing]" ]]; then
+    if [[ $(mpc | grep "/" | cut -d ' ' -f1) == "[playing]" ]]; then
         state="pause"
     else
         state="play"
     fi
 
+    is_random=$(mpc | grep "random" | cut -d ' ' -f11)
+
     # Make it pretty to display in dmenu
     next_song_tmp=$(echo "$next_song" | cut -f2-3 | sed 's/\t/ - /')
 
     menu="$state
-random
+random: is $is_random
 shuffle
 next:       $next_song_tmp"
 
@@ -50,9 +52,6 @@ next:       $next_song_tmp"
         ;;
         random)
             mpc random > /dev/null
-            is_random=$(mpc | grep "random" | cut -d ' ' -f11)
-            mpc | grep "random" | cut -d ' ' -f11 | \
-                notify-send "random: $is_random"
         ;;
         shuffle)
             notify-send "Shuffled playlist"
