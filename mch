@@ -22,10 +22,16 @@ function init
 
 function menu
 {
+    if [[ `mpc | grep "/" | cut -d ' ' -f1` == "[playing]" ]]; then
+        state="pause"
+    else
+        state="play"
+    fi
+
     # Make it pretty to display in dmenu
     next_song_tmp=$(echo "$next_song" | cut -f2-3 | sed 's/\t/ - /')
 
-    menu="play
+    menu="$state
 random
 shuffle
 next:       $next_song_tmp"
@@ -37,6 +43,9 @@ next:       $next_song_tmp"
 
     case "$option" in
         play)
+            mpc toggle > /dev/null
+        ;;
+        pause)
             mpc toggle > /dev/null
         ;;
         random)
